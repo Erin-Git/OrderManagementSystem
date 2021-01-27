@@ -1,0 +1,99 @@
+﻿@model MetaOMS.ViewModels.DeliveryVM
+@{
+    ViewData["Title"] = "Dashboard-";
+}
+@*Staff Index*@
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-info card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-clipboard"></i>
+                    </h1>
+                    <h6>Total Orders</h6>
+                    <h3 class="font-weight-bold">@Model.TotalOrderVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-secondary card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-clock-fast"></i>
+                    </h1>
+                    <h6>Pending Orders</h6>
+                    <h3 class="font-weight-bold">@Model.TotalPendingOrdersVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-theme card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-truck-delivery"></i>
+                    </h1>
+                    <h6>Pending Deliveries</h6>
+                    <h3 class="font-weight-bold">@Model.TotalPendingDeliveryVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-danger card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-close-circle"></i>
+                    </h1>
+                    <h6>Cancelled Orders</h6>
+                    <h3 class="font-weight-bold">@Model.TotalCancelledOrderVMCount</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-success card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-clipboard-check"></i>
+                    </h1>
+                    <h6>Successful Deliveries</h6>
+                    <h3 class="font-weight-bold">@Model.TotalDeliveryVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-cyan card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-clock-alert"></i>
+                    </h1>
+                    <h6>Pending Return/Refunds</h6>
+                    <h3 class="font-weight-bold">@Model.TotalPendingReturnRefundVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-purple card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-loop"></i>
+                    </h1>
+                    <h6>Total Return/Refunds</h6>
+                    <h3 class="font-weight-bold">@Model.TotalReturnedRefundedOrderVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-orange card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="fa fa-shopping-basket"></i>
+                    </h1>
+                    <h6>Products in Stock</h6>
+                    <h3 class="font-weight-bold">@Model.TotalAvaiableProductVMCount </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

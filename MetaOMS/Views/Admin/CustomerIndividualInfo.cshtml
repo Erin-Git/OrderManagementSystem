@@ -1,0 +1,53 @@
+﻿@model MetaOMS.ViewModels.CustomerVM
+@{
+    ViewData["Title"] = "CustomerIndividualInfo";
+    Layout = null;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-10  offset-1 text-center bg-light p-10">
+            <table class="table table-active">
+                <tbody>
+                    <tr>
+                        <td class="thead-dark text-dark">Name:</td>
+                        <td>@Model.CustomerVMName</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Contact:</td>
+                        <td>@Model.ContactNoVM</td>
+                    </tr>
+                    @*<tr>
+                        <td class="thead-dark text-dark">Google Map Address Link:</td>
+                        <td class="text-break">@Model.GoogleMapAddressVM</td>
+                    </tr>*@
+                    <tr>
+                        <td class="thead-dark text-dark">District:</td>
+                        <td>@Model.DistrictVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Sub-district:</td>
+                        <td>@Model.SubDistrictVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Area:</td>
+                        <td>@Model.AreaVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">House No:</td>
+                        <td>@Model.HouseNoVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Road No:</td>
+                        <td>@Model.RoadNoVM</td>
+                    </tr>
+                </tbody>
+            </table>
+        <div>
+            <a onclick="showInPopup('@Url.Action("AddOrUpdateCustomer","Admin",new {id=@Model.CustomerVMId },Context.Request.Scheme)','Update Customer Info')"
+               class="btn btn-dropbox text-white">Edit</a>
+            <a class="btn btn-twitter"asp-controller="Admin" asp-action="PlaceNewOrder" asp-route-id="@Model.CustomerVMId">Create Order</a>
+        </div>
+        </div>
+    </div>
+</div>

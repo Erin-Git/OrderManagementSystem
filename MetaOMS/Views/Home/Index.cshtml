@@ -1,0 +1,151 @@
+﻿@model MetaOMS.ViewModels.UserVM
+@{
+    ViewData["Title"] = "Login-";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] MetaOMS</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon.png">
+    <link rel="icon" type="image/jpg" sizes="16x16" href="~/assets/images/wicked-monday-jxhM5Ni46zw-unsplash.jpg">
+
+    <link rel="stylesheet" href="~/assets/libs/flot/css/float-chart.css" />
+    <link rel="stylesheet" href="~/assets/libs/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/dist/css/icons/font-awesome/css/fa-solid.css" />
+    <link rel="stylesheet" href="~/dist/css/icons/font-awesome/webfonts/fa-solid-900.woff" />
+    <link rel="stylesheet" href="~/dist/css/icons/font-awesome/webfonts/fa-solid-900.woff2" />
+    <link rel="stylesheet" href="~/dist/css/icons/material-design-iconic-font/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="~/dist/css/icons/material-design-iconic-font/css/material-design-iconic-font.css" />
+    <link rel="stylesheet" href="~/dist/css/icons/material-design-iconic-font/fonts/Material-Design-Iconic-Font.svg" />
+    <link rel="stylesheet" href="~/dist/css/icons/themify-icons/themify-icons.css" />
+    <link rel="stylesheet" href="~/dist/css/icons/themify-icons/fonts/themify.svg" />
+    <link rel="stylesheet" href="~/dist/css/style.min.css" />
+    <style>
+        html, body {
+            width: 100% !important;
+            margin: 0 auto;
+            padding: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        #imgSection {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url(/assets/images/wicked-monday-jxhM5Ni46zw-unsplash.jpg);
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            background-repeat: no-repeat;
+        }
+        #titleDiv {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 14%;
+            padding: 50px;
+            padding-top: 60px;
+            padding-bottom: 60px;
+            transform: translateY(-50%);
+            border: 2px groove ghostwhite;
+        }
+        #titleDiv h1{
+            font-size:70px;
+            letter-spacing:3px;
+            font-family:  'Century Gothic';
+        }
+        #formSection {
+            width: 100%;
+            position: absolute;
+            right: 0;
+            background-color: #111;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        #formInput {
+            background-color: transparent;
+            box-shadow: none;
+            border-radius: 0px;
+            color:#ffffff;
+        }
+        #formInput:focus{
+            background-color:transparent;
+        }
+        #formLabel {
+            font-size: 15px;
+        }
+
+        #formTitleDiv {
+            font-family: 'Century Gothic';
+            border-bottom: 2px groove #fff;
+        }
+        .btn{
+            font-size:15px;
+            border-radius:24px;
+            letter-spacing:2px;
+            border:2px groove ghostwhite;
+            background-color:transparent
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row" style="width:100%">
+            <div class="col-6" id="imgSection">
+                <div id="titleDiv"class="text-center d-flex align-items-center justify-content-center">
+                    <h1 class="text-center text-white">MetaOMS</h1>
+                </div>
+            </div>
+            <div class="col-6 d-flex align-items-center justify-content-center text-white" id="formSection">
+                <div>
+                    <div id="formTitleDiv" class="mb-5">
+                        <h1 class="text-center">Login Here</h1>
+                    </div>
+                    <form asp-controller="Home" asp-action="Index" method="post">
+                        <div class="form-group">
+                            <label id="formLabel" for="email">Enter username or email address</label>
+                            <input autocomplete="off" asp-for="UserVMName" type="email" class="form-control" id="formInput" placeholder="username@gmail.com">
+                            <span asp-validation-for="UserVMName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label id="formLabel" for="password">Enter password</label>
+                            <input asp-for="PasswordVM" type="password" class="form-control" id="formInput" placeholder="● ● ● ● ● ● ● ●">
+                            <span asp-validation-for="PasswordVM" class="text-danger"></span>
+                        </div>
+                        <div class="form-group text-center text-black-50">
+                            <button type="submit" class="btn text-light font-weight-bold pr-4 pl-4 pt-2 pb-2 mt-3">LOGIN</button>
+                        </div>
+                        <div class="fomr-group tect-center">
+                            <span class="text-danger font-style-bold">@ViewBag.notFound</span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="~/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="~/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="~/dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="~/dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="~/dist/js/custom.min.js"></script>
+    <!-- Charts js Files -->
+    <script src="~/js/html2pdf.bundle.js" asp-append-version="true"></script>
+    <script src="~/js/jspdf.min.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+
+</html>

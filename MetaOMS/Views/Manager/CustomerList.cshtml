@@ -1,0 +1,112 @@
+﻿@model X.PagedList.IPagedList<MetaOMS.ViewModels.CustomerVM>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@{
+    ViewData["Title"] = "CustomerList-";
+}
+<div class="col-10 offset-1 mt-5">
+    <h2 class="text-center mt-3 mb-3">List of Customers</h2>
+    <div class="search-form mb-2">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="ti-search"></i>
+                </div>
+            </div>
+            <input id="myCustomSearch" type="text" class="form-control" placeholder="Type here to search...">
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table bg-light" id="example">
+            <thead class="thead-light">
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Contact No
+                    </th>
+                    <th>
+                        District
+                    </th>
+                    <th>
+                        Sub-district
+                    </th>
+                    <th>
+                        Area
+                    </th>
+                    <th>
+                        Road
+                    </th>
+                    <th>
+                        House
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SerialNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CustomerVMName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactNoVM)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DistrictVM)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubDistrictVM)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AreaVM)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoadNoVM)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HouseNoVM)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (Model.Count > 0)
+    {
+        @Html.PagedListPager((IPagedList)Model, c => Href("~/Manager/CustomerList?page=" + c),
+        new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+        {
+            PageClasses = new string[] { "page-link" },
+            UlElementClasses = new string[] { "pagination" },
+            LiElementClasses = new string[] { "page-item" },
+            MaximumPageNumbersToDisplay = 5,
+        }
+        )}
+</div>
+@section Scripts
+{
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "dom": 'lrtip',
+                "info": false,
+                "lengthChange": false,
+                "paging": false,
+            });
+            var table = $('#example').DataTable();
+            $('#myCustomSearch').on('keyup', function () {
+                table.search($(this).val()).draw();
+            });
+        });
+    </script>
+}

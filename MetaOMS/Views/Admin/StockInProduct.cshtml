@@ -1,0 +1,27 @@
+﻿@model MetaOMS.ViewModels.ProductInventoryVM
+@{
+    ViewData["Title"] = "StockInProduct-";
+    Layout = null;
+}
+
+<form asp-controller="Admin" asp-action="StockInProduct" onsubmit="return jQueryAjaxPost(this);">
+    <div class="form-group">
+        <label>Enter Stock in Quanity</label>
+        <input asp-for="StockInQuantityVM" placeholder="Quantity" class="form-control" />
+        <span class="text-danger"asp-validation-for="StockInQuantityVM"></span>
+        <input type="hidden" asp-for="ProductVMId" />
+        <input type="hidden" asp-for="NameVM" />
+        <input type="hidden" asp-for="BrandVMId" />
+        <input type="hidden" asp-for="ProductCategoryIdVM" />
+        <input type="hidden" asp-for="ColorVM" />
+        <input type="hidden" asp-for="SizeVM" />
+        <input type="hidden" asp-for="MaterialVM" />
+        <input type="hidden" asp-for="DescriptionVM" />
+        <input type="hidden" asp-for="SellPriceVM" />
+        <input type="hidden" asp-for="PurchasePriceVM" />
+        <input type="hidden" asp-for="AvailableQuantityVM" />
+        <input id="CurrentPage" type="hidden" asp-for="CurrentPage" />
+        <span asp-validation-for="StockInQuantityVM"></span>
+    </div>
+    <button class="btn btn-block btn-success" type="submit">Submit</button>
+</form>

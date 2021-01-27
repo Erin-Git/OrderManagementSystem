@@ -1,0 +1,88 @@
+﻿@model X.PagedList.IPagedList<MetaOMS.ViewModels.ProductInventoryVM>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using MetaOMS.ViewModels
+@{
+    ViewData["Title"] = "ProductList-";
+}
+
+<div class="col-10 offset-1 mt-5 text-center">
+    <h1 class="text-center mt-3 mb-3">Product List</h1>
+    <div class="search-form mb-2">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="ti-search"></i>
+                </div>
+            </div>
+            <input id="myCustomSearch" type="text" class="form-control" placeholder="Type here to search...">
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table" id="example">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th>Material</th>
+                    <th>Sell price</th>
+                    <th>Last Stocked In</th>
+                    <th>Total Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>@item.SerialNo</td>
+                    <td>@item.NameVM</td>
+                    <td>@item.ProductCategoryTitleVM</td>
+                    <td>@item.BrandNameVM</td>
+                    <td>@((ColorEnum)Convert.ToInt32(item.ColorVM))</td>
+                    <td>@((SizeEnum)Convert.ToInt32(item.SizeVM))</td>
+                    <td>@((MaterialEnum)Convert.ToInt32(item.MaterialVM))</td>
+                    <td>@item.SellPriceVM</td>
+                    <td>@item.StockInQuantityVM</td>
+                    <td>@item.AvailableQuantityVM</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("ProductList", new { page = page }),
+     new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+     {
+         DisplayItemSliceAndTotal = true,
+         ContainerDivClasses = new[] { "navigation" },
+         LiElementClasses = new[] { "page-item" },
+         PageClasses = new[] { "page-link" },
+     })
+</div>
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "dom": 'lrtip',
+                "info": false,
+                "lengthChange": false,
+                "paging": false,
+            });
+            var table = $('#example').DataTable();
+            $('#myCustomSearch').on('keyup', function () {
+                table.search($(this).val()).draw();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+        });
+    </script>
+}

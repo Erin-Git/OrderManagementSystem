@@ -1,0 +1,200 @@
+﻿@model MetaOMS.ViewModels.DeliveryVM
+@{
+    ViewData["Title"] = "Dashboard-";
+}
+@*Manager Index*@
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-info card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-clipboard"></i>
+                    </h1>
+                    <h6>Total Orders</h6>
+                    <h3 class="font-weight-bold">@Model.TotalOrderVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-success card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-clipboard-check"></i>
+                    </h1>
+                    <h6>Successful Deliveries</h6>
+                    <h3 class="font-weight-bold">@Model.TotalDeliveryVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-danger card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-close-circle"></i>
+                    </h1>
+                    <h6>Cancelled Orders</h6>
+                    <h3 class="font-weight-bold">@Model.TotalCancelledOrderVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-warning card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-loop"></i>
+                    </h1>
+                    <h6>Returns/Refunds</h6>
+                    <h3 class="font-weight-bold">@Model.TotalReturnedRefundedOrderVMCount</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div id="productChartContainer" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $.getJSON("/Manager/GetDataforProductChart", function (data) {
+                var Names = []
+                var Qts = []
+                for (var i = 0; i < data.length; i++) {
+                    Names.push(data[i].name);
+                    Qts.push(data[i].count);
+                }
+
+                Highcharts.chart('productChartContainer', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Successful Product Consumption'
+                    },
+                    subtitle: {
+                        text: 'Graph showing product consumption of successful deliveries along with avilable products'
+                    },
+                    xAxis: {
+                        categories: Names
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Sold quantity'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: false
+                        }
+                    },
+                    series: [{
+                        name: 'Products',
+                        data: Qts
+                    }]
+                });
+            });
+        });</script>
+
+
+    @*<script>//basic column
+        $(document).ready(function () {
+            $.getJSON("/Admin/GetDataforStatusChart", function (data) {
+                var Names = []
+                var Delivered = []
+                var Cancelled = []
+                var ReturnedRefunded = []
+                //for (var j = 0; j < data.length; j++) {
+                //    Names.push(data[j].name);
+                //    Delivered.push(data[j].delivered);
+                //    Cancelled.push(data[j].cancelled);
+                //    ReturnedRefunded.push(data[j].returnedrefunded);
+                //}
+                for (var i = 1; i < 12; i++) {
+                     for (var j = 0; j < data.length; j++) {
+                    Names.push(data[j].name);
+                    Delivered.push(data[j].delivered);
+                    Cancelled.push(data[j].cancelled);
+                    ReturnedRefunded.push(data[j].returnedrefunded);
+                }
+                }
+                Highcharts.chart('statusChartContainer', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Monthly Average Order Condition'
+                    },
+                    subtitle: {
+                        text: 'Source: WorldClimate.com'
+                    },
+                    xAxis: {
+                        categories: [
+                            'Jan',
+                            'Feb',
+                            'Mar',
+                            'Apr',
+                            'May',
+                            'Jun',
+                            'Jul',
+                            'Aug',
+                            'Sep',
+                            'Oct',
+                            'Nov',
+                            'Dec'
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Amount'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'Delivered',
+                        data: Delivered
+                    }, {
+                        name: 'Cancelled',
+                        data: Cancelled
+                    }, {
+                        name: 'Returned/Refunded',
+                        data: ReturnedRefunded
+                    }]
+                });
+            });
+        });</script>*@
+
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    @*<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+
+        <script src="https://code.highcharts.com/modules/drilldown.js"></script>*@
+}

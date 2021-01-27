@@ -1,0 +1,344 @@
+﻿@model MetaOMS.ViewModels.OrderVM
+@using MetaOMS.ViewModels
+@{
+    ViewData["Title"] = "UpdateOrder - ";
+}
+<link href="~/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+<style>
+    .bg-light {
+        box-shadow: 0 4px 6px 0 rgba(0,0,0,0.2),0 5px 6px 0 rgba(0,0,0,0.4);
+        border-radius: 8px;
+    }
+
+    .ti-angle-double-down {
+        background-color: deepskyblue;
+        color: #ffffff;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .ti-check {
+        background-color: forestgreen;
+        color: #ffffff;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .ti-list {
+        background-color: orange;
+        color: #ffffff;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .ti-server {
+        background-color: gold;
+        color: #444444;
+        padding: 5px;
+        border-radius: 10px;
+    }
+</style>
+<div class="container">
+    <form asp-controller="Admin" asp-action="UpdateOrder" method="post">
+        <input asp-for="CustomerVMId" type="hidden" />
+        <h2 class="text-center mt-5 mb-1">Update Order for @Model.CustomerVMName</h2>
+        <hr />
+        <div class="row">
+            <div class="col-5 bg-light table-responsive p-4">
+                <h3 class="text-center">Choose From Here <i class="ti-angle-double-down"></i></h3>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="search-form mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="ti-search"></i>
+                                            </div>
+                                        </div>
+                                        <select asp-for="ShippingVMId" asp-items="@ViewBag.shippingMethodSelectList" id="shippingMethod">
+                                            <option hidden disabled selected>Shipping methods</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="search-form mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="ti-search"></i>
+                                            </div>
+                                        </div>
+                                        <select asp-for="PaymentVMId" asp-items="@ViewBag.paymentMethodSelectList" id="paymentMethod">
+                                            <option hidden disabled selected>Payment methods</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="search-form mb-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="ti-search"></i>
+                                            </div>
+                                        </div>
+                                        <select asp-for="ProductVMId" asp-items="@ViewBag.productSelectList" id="selectListSearch">
+                                            <option hidden disabled selected>Search products</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-6 offset-1 bg-light table-responsive p-4">
+                <h3 class="text-center">Selected Items <i class="ti-check"></i></h3>
+                <div id="summary">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Count</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Sub-total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                               <td>@Model.SerialNo</td>
+                               <td>@Model.ProductVMName</td>
+                               <td>@Model.QuantityVM</td>
+                               <td>@Model.ProductVMEachPrice</td>
+                               <td>@Model.TotalPriceVM</td>
+                           </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive bg-light mt-5 mb-5 p-4 text-center">
+            <h3 class="text-center">Detailed View <i class="ti-list"></i></h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>Material</th>
+                        <th>Price(each)</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="displayDetails">
+                    <tr>
+                        <td>@Model.SerialNo</td>
+                        <td>@Model.ProductVMName</td>
+                        <td>@Model.ProductVMCategory</td>
+                        <td>@Model.ProductVMBrand</td>
+                        <td>@((ColorEnum)Convert.ToInt32(Model.ProductVMColor))</td>
+                        <td>@((SizeEnum)Convert.ToInt32(Model.ProductVMSize))</td>
+                        <td>@((MaterialEnum)Convert.ToInt32(Model.ProductVMMaterial))</td>
+                        <td>@Model.ProductVMEachPrice</td>
+                        <td>@Model.QuantityVM</td>
+                        <td>delete</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="btn-group text-center">
+            <button class="btn btn-success" type="submit">Update Order</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+    <script src="~/sweetalert2/sweetalert2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //Clear Cache
+            $.getJSON("/Admin/ClearCacheStorage", function (data) {
+            });
+            //End
+            $('#selectListSearch').on('change', function () {
+
+                var url = "/Admin/SetOrderedProduct";
+                var productId = $(this).find(":selected").val();
+
+                $(this).find(":selected").attr("disabled", "disabled");
+                $(this).val("Search products");
+                $.getJSON(url, { productId: productId }, function (data) {
+                    var count = 1;
+                    var items = "";
+                    if (data.saveStatus == true) {
+
+                        $.each(data.savedData, function (key, val) {
+
+                            items += '<tr><td>' + count + '</td>';
+                            items += '<td>' + val.productVMName + '</td>';
+                            items += '<td>' + val.productVMCategory + '</td>';
+                            items += '<td>' + val.productVMBrand + '</td>';
+                            items += '<td>' + val.productVMColor + '</td>';
+                            items += '<td>' + val.productVMSize + '</td>';
+                            items += '<td>' + val.productVMMaterial + '</td>';
+                            items += '<td>' + val.productVMEachPrice + '</td>';
+                            items += '<td> <div class="btn-group m-3">';
+                            items += '<button type="button" id="Minus" class="btn btn-pinterest" value="-"><strong>-</strong></button>';
+                            items += '<input data-id="' + val.productVMId + '" id="Quantity" type="text" value="' + val.quantityVM + '" class="form-control" readonly />';
+                            items += '<button type="button" id="Plus" class="btn btn-success" value="+"><strong>+</strong></button></div></td>';
+                            items += '<td> <button type="button" id="DeleteRow" class="btn btn-pinterest"><i class="mdi mdi-delete"></i></button></div></td></tr>';
+
+                            count++;
+
+                        });
+                        $('#displayDetails').html(items);
+                        GetSummry();
+                        //To disable the decrement button initially when value is 1
+                        $("[id^=Quantity]").each(function () {
+                            var C = $(this).closest("tr").find("#Quantity").val();
+                            if (C == 1) {
+                                $(this).closest("tr").find("#Minus").attr("disabled", true);
+                            }
+                        });
+                        //End of Code
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'This product is out of stock !',
+                            footer: '<b>Please stcok in first</b>'
+                        });
+                    }
+                });
+            });
+            //To Set The Button Increment value to Cache
+            $(document).on("click", "button", function () {
+                var value = $(this).attr("value");
+                var TotalQuantity = "";
+
+                if (value == "+") {
+                    var This = $(this);
+                    var productId = $(this).closest("tr").find("#Quantity").data('id');
+                    var Q = $(this).closest("tr").find("#Quantity").val();
+                    var url = "/Admin/SetOrderedProduct";
+                    $.getJSON(url, { productId: productId }, function (data) {
+                        if (data.saveStatus == false) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'This product is out of stock !',
+                                footer: '<b>Please stcok in first</b>'
+                            })
+                        }
+                        else {
+                            TotalQuantity = Number(Q) + Number(1);
+                            This.closest("tr").find("#Quantity").val(TotalQuantity);
+                            if (TotalQuantity > 1) {
+                                This.closest("tr").find('#Minus').removeAttr("disabled");
+                            }
+                        }
+                        GetSummry();
+                    });
+                }
+                else if (value == "-") {
+                    var productId = $(this).closest("tr").find("#Quantity").data('id');
+                    var Q = $(this).closest("tr").find("#Quantity").val();
+                    var TotalQuantity = Number(Q) - Number(1);
+                    $(this).closest("tr").find("#Quantity").val(TotalQuantity);
+
+                    if (TotalQuantity == 1) {
+                        $(this).closest("tr").find("#Minus").attr("disabled", true);
+                    }
+                    var url = "/Admin/RemoveOrderedProduct";
+                    $.getJSON(url, { productId: productId }, function (data) {
+                        console.log(data.saveStatus);
+                        GetSummry();
+                    });
+                }
+            });
+            // To Delte Entire row
+            $(document).on("click", "#DeleteRow", function (event) {
+                //Get Product Id
+                var productId = $(this).closest("tr").find("#Quantity").data('id');
+                console.log("productId" + productId);
+                var url = "/Admin/RemoveOrderedProductAll";
+                $.getJSON(url, { productId: productId }, function (data) {
+                    GetSummry();
+                });
+                //This code is for delte the row
+                $(this).closest("tr").remove();
+                $("#selectListSearch option[value=" + productId + "]").removeAttr('disabled');
+            });
+            //Set Shipping and Payment Method In Cache
+            $('#shippingMethod').on('change', function () {
+                var url = "/Admin/SetShippingMethod";
+                var shippingMethod = $(this).find(":selected").val();
+                $.getJSON(url, { shippingMethod: shippingMethod }, function (data) {
+                });
+            });
+            $('#paymentMethod').on('change', function () {
+                var url = "/Admin/SetPaymentMethod";
+                var paymentMethodId = $(this).find(":selected").val();
+                $.getJSON(url, { paymentMethodId: paymentMethodId }, function (data) {
+                    console.log(data);
+                });
+            });
+        });
+        //Set The Summary
+        function GetSummry() {
+            var url = "/Admin/GetOrderedItemSummary";
+            $.getJSON(url, function (data) {
+                var count = 1;
+                var subTotal = 0;
+                var items = "";
+                var item = "";
+                if (data.hasValue == true) {
+                    item += '<table class="table"><thead><tr>';
+                    item += '<td>Count</td>';
+                    item += '<td>Product</td>';
+                    item += '<td>Quantity</td>';
+                    item += '<td>Price</td>';
+                    item += '<td>Sub-total</td>';
+                    item += '</tr></thead>';
+                    item += '<tbody id="summaryData"></tbody></table>';
+                    $("#summary").html(item);
+                    $.each(data.savedValue, function (key, val) {
+                        items += '<tr><td>' + count + '</td>';
+                        items += '<td>' + val.productVMName + '</td>';
+                        items += '<td>' + val.quantityVM + '</td>';
+                        items += '<td>' + val.productVMEachPrice + '</td>';
+                        items += '<td>' + val.totalPriceVM + '</td></tr>';
+                        count++;
+                        subTotal += val.totalPriceVM;
+                    });
+                    $('#summaryData').html(items);
+                    items += '<tr><td colspan="4" class="h4">Total <i class="ti-server"></i></td>';
+                    items += '<td>' + subTotal + '</td></tr>';
+                    $('#summaryData').html(items);
+                }
+                else {
+                    $('#summary').html("");
+                }
+            });
+        }
+    </script>
+}

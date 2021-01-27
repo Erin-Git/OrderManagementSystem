@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "AddorUpdateBrand";
+}
+
+@model MetaOMS.ViewModels.BrandVM
+
+@{ Layout = null; }
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="AddOrUpdateBrand" asp-route-id="@Model.BrandVMId" onsubmit="return jQueryAjaxPost(this);">
+
+            <input type="hidden" asp-for="BrandVMId" />
+            <div class="form-group">
+                <input id="CurrentPage" type="hidden" asp-for="CurrentPage" />
+                <label asp-for="BrandVMName" class="control-label"></label>
+                <div class="input-group">
+
+                    <input asp-for="BrandVMName" class="form-control" />
+                </div>
+                <span asp-validation-for="BrandVMName" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-6 offset-md-3">
+                    <input type="submit" value="Submit" class="btn btn-success text-white btn-block" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@model MetaOMS.ViewModels.DeliveryStaffVM
+@{
+    ViewData["Title"] = "AddorUpdateDeliveryStaff";
+}
+
+@{ Layout = null; }
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="AddorUpdateDeliveryStaff" asp-route-id="@Model.DeliveryStaffVMId" onsubmit="return jQueryAjaxPost(this);">
+
+            <input type="hidden" asp-for="DeliveryStaffVMId" />
+            <input type="hidden" asp-for="UserVMId" />
+            <div class="form-group">
+                <input id="CurrentPage" type="hidden" asp-for="CurrentPage" />
+                <label asp-for="DeliveryStaffVMName" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="DeliveryStaffVMName" class="form-control" />
+                </div>
+                <span asp-validation-for="DeliveryStaffVMName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactVMNo" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="ContactVMNo" class="form-control" />
+                </div>
+                <span asp-validation-for="ContactVMNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailVMAddress" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="EmailVMAddress" class="form-control" />
+                </div>
+                <span asp-validation-for="EmailVMAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6 offset-md-3">
+                    <input type="submit" value="Submit" class="btn btn-success text-white btn-block" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

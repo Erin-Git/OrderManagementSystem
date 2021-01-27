@@ -1,0 +1,79 @@
+﻿@model List<MetaOMS.ViewModels.DeliveryVM>
+@{
+    ViewData["Title"] = "AllOrderIndividualInfo-";
+    Layout = null;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <ul class="list-group">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <li class="list-group-item active font-weight-bold border-right"><i class="mdi mdi-account-circle"></i>&nbsp;Customer Info</li>
+                    <li class="list-group-item"><h6 class="font-weight-bold">Name:</h6>@Model[i].CustomerVMName</li>
+                    <li class="list-group-item"><h6 class="font-weight-bold">Contact:</h6>@Model[i].CustomerVMContactNo</li>
+                    <li class="list-group-item">
+                        <h6 class="font-weight-bold">Address:</h6>
+                        @Model[i].CustomerVMDistrict , @Model[i].CustomerVMSubDistrict ,
+                        @Model[i].CustomerVMArea , Road- @Model[i].CustomerVMRoadNo , House- @Model[i].CustomerVMRoadNo
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-6">
+            <ul class="list-group">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <li class="list-group-item active font-weight-bold border-right"><i class="mdi mdi-truck-delivery"></i>&nbsp;Order Info</li>
+
+                    <li class="list-group-item"><h6 class="font-weight-bold">Shipping by:</h6>@Model[i].ShippingVMMethod</li>
+                    <li class="list-group-item"><h6 class="font-weight-bold">Payment by:</h6>@Model[i].PaymentVMMethod</li>
+                    <li class="list-group-item">
+                        <h6 class="font-weight-bold">Ordered date:</h6>@Model[i].OrderPlacedVMDate
+                        @if (Model[i].DeliveredVMDate != new DateTime(1900, 1, 1, 0, 0, 0, 0))
+                        {
+                            <h6 class="font-weight-bold">Delivered date:</h6>@Model[i].DeliveredVMDate
+                        }
+                        else
+                        {
+                            <h6 class="font-weight-bold">Delivered date: &nbsp; -</h6> 
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-12 mt-2">
+            <ul class="list-group">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <li class="list-group-item active font-weight-bold border-right text-center"><i class="mdi mdi-shopping"></i>&nbsp;Product Details</li>
+
+                    <li class="list-group-item">
+                        <div class="table-responsive text-center">
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quanity</th>
+                                    <th>Sub-total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model[i].productInventory_VM.productInventoryVMs)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@item.NameVM</td>
+                                        <td class="align-middle">@item.QuantityVM</td>
+                                        <td class="align-middle">@item.EachPriceVM</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        </div>
+                    </li>
+
+                }
+            </ul>
+        </div>
+    </div>
+</div>

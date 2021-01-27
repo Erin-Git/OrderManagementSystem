@@ -1,0 +1,83 @@
+﻿@model MetaOMS.ViewModels.CustomerVM
+@{
+    ViewData["Title"] = "AddOrUpdateCustomer";
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="AddOrUpdateCustomer" asp-route-id="@Model.CustomerVMId" onsubmit="return jQueryAjaxPost(this);">
+
+            <input type="hidden" asp-for="CustomerVMId" />
+
+            <div class="form-group">
+                <input id="CurrentPage" type="hidden" asp-for="CurrentPage" />
+                <label asp-for="CustomerVMName" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="CustomerVMName" class="form-control" />
+                </div>
+                <span asp-validation-for="CustomerVMName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactNoVM" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="ContactNoVM" class="form-control" />
+                </div>
+                <span asp-validation-for="ContactNoVM" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GoogleMapAddressVM" class="control-label"></label>
+                <div class="input-group">
+                    <input asp-for="GoogleMapAddressVM" class="form-control" />
+                </div>
+                <span asp-validation-for="GoogleMapAddressVM" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DistrictVM" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="DistrictVM" class="form-control" />
+                </div>
+                <span asp-validation-for="DistrictVM" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubDistrictVM" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="SubDistrictVM" class="form-control" />
+                </div>
+                <span asp-validation-for="SubDistrictVM" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AreaVM" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="AreaVM" class="form-control" />
+                </div>
+                <span asp-validation-for="AreaVM" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HouseNoVM" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="HouseNoVM" class="form-control" />
+                </div>
+                <span asp-validation-for="HouseNoVM" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoadNoVM" class="control-label"></label>
+                <div class="input-group">
+                    <input autocomplete="off" asp-for="RoadNoVM" class="form-control" />
+                </div>
+                <span asp-validation-for="RoadNoVM" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-6 offset-md-3">
+                    <input type="submit" value="Submit" class="btn btn-success text-white btn-block" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*@section Scripts{
+    <script src="~/js/site.js"></script>
+}*@

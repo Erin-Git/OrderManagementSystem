@@ -1,0 +1,264 @@
+﻿@model MetaOMS.ViewModels.DeliveryVM
+@{
+    ViewData["Title"] = "Dashboard-";
+}
+@*Admin index*@
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-cyan card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-clipboard"></i>
+                    </h1>
+                    <h6>Total Orders</h6>
+                    <h3 class="font-weight-bold">@Model.TotalOrderVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-success card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="mdi mdi-clipboard-check"></i>
+                    </h1>
+                    <h6>Successful Deliveries</h6>
+                    <h3 class="font-weight-bold">@Model.TotalDeliveryVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-purple card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="fa fa-shopping-basket"></i>
+                    </h1>
+                    <h6>Available Products</h6>
+                    <h3 class="font-weight-bold">@Model.TotalAvaiableProductVMCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="bg-warning card card-hover rounded">
+                <div class="box text-center text-white">
+                    <h1 class="font-light">
+                        <i class="fa fa-money-bill-alt"></i>
+                    </h1>
+                    <h6>Profit Rate</h6>
+                    <h3 class="font-weight-bold">@Model.ProfitVM %</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-sm-12 col-lg-9">
+            <div id="productChartContainer"class=" border border-dark rounded" 
+                 @*style="min-width: 310px; height: 400px; margin: 0 auto"*@>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-3">
+            <div class="row text-dark mt-5">
+                <div class="col-12 bg-light mt-3 mb-3 text-center p-2 border border-cyan rounded">
+                    <div class="d-inline-flex">
+                        <div class="col-9 p-0 m-0">
+                            <h6 class="mt-2"><strong>Stock Report &nbsp;</strong></h6>
+                        </div>
+                        <div class="col-3 p-0 m-0">
+                            <a class="btn btn-cyan text-light" asp-controller="Admin" asp-action="ProductListforReport">
+                                <i class="mdi mdi-receipt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 bg-light mb-3 text-center p-2 border border-success rounded">
+                    <div class="d-inline-flex">
+                        <div class="col-9 p-0 m-0">
+                            <h6 class="mt-2"><strong>Our Customer &nbsp;</strong></h6>
+                        </div>
+                        <div class="col-3 p-0 m-0">
+                            <a class="btn btn-success text-light" asp-controller="Admin" asp-action="CustomerListReport">
+                                <i class="mdi mdi-receipt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 bg-light mb-3 text-center p-2 border border-purple rounded">
+                    <div class="d-inline-flex">
+                        <div class="col-9 p-0 m-0">
+                            <h6 class="mt-2"><strong>Monthly Profit &nbsp;</strong></h6>
+                        </div>
+                        <div class="col-3 p-0 m-0">
+                            <a class="btn btn-purple text-light" asp-controller="Admin" asp-action="ProfitReport">
+                                <i class="mdi mdi-receipt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 bg-light mb-3 text-center p-2 border border-orange rounded">
+                    <div class="d-inline-flex">
+                        <div class="col-9 p-0 m-0">
+                            <h6 class="mt-2"><strong>View Complaints &nbsp;</strong></h6>
+                        </div>
+                        <div class="col-3 p-0 m-0">
+                            <a class="btn btn-warning text-light" asp-controller="Admin" asp-action="ComplaintReport">
+                                <i class="mdi mdi-receipt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div class="col-12">
+                <div id="statusChartContainer" style="min-width: 310px; height: 400px;  margin: 0 auto"></div>
+            </div>*@
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $.getJSON("/Admin/GetDataforProductChart", function (data) {
+                var Names = []
+                var Qts1 = []
+                var Qts2 = []
+                for (var i = 0; i < data.length; i++) {
+                    Names.push(data[i].name);
+                    //Qts.push(data[i].count);
+                    Qts1.push(data[i].available);
+                    Qts2.push(data[i].sold);
+                }
+
+                Highcharts.chart('productChartContainer', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Product Consumption'
+                    },
+                    subtitle: {
+                        text: 'Chart showing product consumption of successful deliveries along with avilable products'
+                    },
+                    xAxis: {
+                        categories: Names
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Quantity'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: false
+                        }
+                    },
+                    series: [{
+                        name: 'Available Products',
+                        data: Qts1
+                    },
+                        {
+                        name: 'Sold Products',
+                        data: Qts2
+                    }]
+                });
+            });
+        });</script>
+
+
+    @*<script>//basic column
+        $(document).ready(function () {
+            $.getJSON("/Admin/GetDataforStatusChart", function (data) {
+                var Names = []
+                var Delivered = []
+                var Cancelled = []
+                var ReturnedRefunded = []
+                //for (var j = 0; j < data.length; j++) {
+                //    Names.push(data[j].name);
+                //    Delivered.push(data[j].delivered);
+                //    Cancelled.push(data[j].cancelled);
+                //    ReturnedRefunded.push(data[j].returnedrefunded);
+                //}
+                for (var i = 1; i < 12; i++) {
+                     for (var j = 0; j < data.length; j++) {
+                    Names.push(data[j].name);
+                    Delivered.push(data[j].delivered);
+                    Cancelled.push(data[j].cancelled);
+                    ReturnedRefunded.push(data[j].returnedrefunded);
+                }
+                }
+                Highcharts.chart('statusChartContainer', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Monthly Average Order Condition'
+                    },
+                    subtitle: {
+                        text: 'Source: WorldClimate.com'
+                    },
+                    xAxis: {
+                        categories: [
+                            'Jan',
+                            'Feb',
+                            'Mar',
+                            'Apr',
+                            'May',
+                            'Jun',
+                            'Jul',
+                            'Aug',
+                            'Sep',
+                            'Oct',
+                            'Nov',
+                            'Dec'
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Amount'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'Delivered',
+                        data: Delivered
+                    }, {
+                        name: 'Cancelled',
+                        data: Cancelled
+                    }, {
+                        name: 'Returned/Refunded',
+                        data: ReturnedRefunded
+                    }]
+                });
+            });
+        });</script>*@
+
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    @*<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+
+        <script src="https://code.highcharts.com/modules/drilldown.js"></script>*@
+}

@@ -1,0 +1,198 @@
+﻿@model MetaOMS.ViewModels.ProductInventory_VM
+@using MetaOMS.ViewModels
+@{
+    ViewData["Title"] = "AddNewProduct-";
+}
+
+<div class="container mt-5 text-center">
+    <h2 class="text-center mt-3 mb-3">Add New Product</h2>
+    <form asp-controller="Admin" asp-action="AddNewProduct" method="post">
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>Material</th>
+                        <th>Description</th>
+                        <th>Purchase price</th>
+                        <th>Sell price</th>
+                        @*<th>Stocked In Quanity</th>*@
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+
+                    <tr>
+                        <td>
+                            <input asp-for="productInventoryVMs[0].NameVM" placeholder="Product name" />
+                            <span asp-validation-for="productInventoryVMs[0].NameVM"></span>
+                        </td>
+                        <td>
+                            <select id="productCategories0" asp-for="productInventoryVMs[0].ProductCategoryIdVM">
+                                <option disabled hidden selected>Select product category</option>
+                            </select>
+                            <span asp-validation-for="productInventoryVMs[0].ProductCategoryIdVM"></span>
+                        </td>
+                        <td>
+                            <select id="brands0" asp-for="productInventoryVMs[0].BrandVMId">
+                                <option disabled hidden selected>Select brand</option>
+                            </select>
+                            <span asp-validation-for="productInventoryVMs[0].BrandVMId"></span>
+                        </td>
+                        <td>
+                            <select id="colors0" asp-for="productInventoryVMs[0].ColorVM"
+                                    asp-items="@Html.GetEnumSelectList<ColorEnum>()">
+                                <option disabled hidden selected>Choose color</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="sizes0" asp-for="productInventoryVMs[0].SizeVM"
+                                    asp-items="@Html.GetEnumSelectList<SizeEnum>()">
+                                <option disabled hidden selected>Choose size</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select id="materials0" asp-for="productInventoryVMs[0].MaterialVM"
+                                    asp-items="@Html.GetEnumSelectList<MaterialEnum>()">
+                                <option disabled hidden selected>Choose material</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input asp-for="productInventoryVMs[0].DescriptionVM" placeholder="Description" />
+                            <span asp-validation-for="productInventoryVMs[0].DescriptionVM"></span>
+                        </td>
+                        <td>
+                            <input asp-for="productInventoryVMs[0].PurchasePriceVM" placeholder="Purchase price" />
+                            <span asp-validation-for="productInventoryVMs[0].PurchasePriceVM"></span>
+                        </td>
+                        <td>
+                            <input asp-for="productInventoryVMs[0].SellPriceVM" placeholder="Sell price" />
+                            <span asp-validation-for="productInventoryVMs[0].SellPriceVM"></span>
+                        </td>
+                        @*<td>
+                            <input asp-for="productInventoryVMs[0].StockInQuantityVM" placeholder="Stock in quantity" />
+                            <span asp-validation-for="productInventoryVMs[0].StockInQuantityVM"></span>
+                        </td>*@
+                        <td><input id="addrow" type="button" class="btn btn-sm btn-dropbox" value="Next" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button class="btn btn-success" type="submit">Submit</button>
+    </form>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var concat = 0;
+        var counter = 0;
+        $(document).ready(function () {
+
+            var url = "/Admin/GetProductCategories";
+            $.getJSON(url, function (data) {
+                var items = "<option hidden disabled selected>Select product category</option>";
+                $('#productCategories' + 0).empty();
+                $.each(data, function (i, sec) {
+                    items += '<option value="' + sec.productCategoryId + '">' + sec.productCategoryTitle + '</option > ';
+                });
+                $('#productCategories' + 0).html(items);
+            });
+
+            var url = "/Admin/GetBrands";
+            $.getJSON(url, function (data) {
+                var items = "<option hidden disabled selected>Select brand</option>";
+                $('#brands' + 0).empty();
+                $.each(data, function (i, sec) {
+                    items += '<option value="' + sec.brandId + '">' + sec.brandName + '</option > ';
+                });
+                $('#brands' + 0).html(items);
+            });
+
+
+            $("#addrow").on("click", function () {
+                concat++;
+                counter++;
+                var newRow = $("<tr>");
+                var cols = "";
+                cols += '<td><input name="productInventoryVMs[' + counter + '].NameVM"placeholder="Product name"/></td>'
+                cols += '<td><select id="productCategories' + concat + '" name="productInventoryVMs[' + counter + '].ProductCategoryIdVM"/></select></td>'
+                cols += '<td><select id="brands' + concat + '" name="productInventoryVMs[' + counter + '].BrandVMId"/></select></td>'
+                cols += '<td><select id="colors' + concat + '" name="productInventoryVMs[' + counter + '].ColorVM"/></select></td>'
+                cols += '<td><select id="sizes' + concat + '" name="productInventoryVMs[' + counter + '].SizeVM"/></td>'
+                cols += '<td><select id="materials' + concat + '" name="productInventoryVMs[' + counter + '].MaterialVM"/></td>'
+                cols += '<td><input name="productInventoryVMs[' + counter + '].DescriptionVM"placeholder="Description"/></td>'
+                cols += '<td><input name="productInventoryVMs[' + counter + '].PurchasePriceVM"placeholder="Purchase price"/></td>'
+                cols += '<td><input name="productInventoryVMs[' + counter + '].SellPriceVM"placeholder="Sell price"/></td>'
+                //cols += '<td><input name="productInventoryVMs[' + counter + '].StockInQuantityVM"placeholder="Stock in quantity"/></td>'
+                cols += '<td><input type="button" class="btn btn-sm btn-pinterest text-white"value="Remove"></td>';
+
+                newRow.append(cols);
+                $("#tbody").append(newRow);
+
+                var url = "/Admin/GetProductCategories";
+                $.getJSON(url, function (data) {
+                    var items = "<option hidden disabled selected>Select product category</option>";
+                    $('#productCategories' + concat).empty();
+                    $.each(data, function (i, sec) {
+                        items += '<option value="' + sec.productCategoryId + '">' + sec.productCategoryTitle + '</option > ';
+                    });
+                    $('#productCategories' + concat).html(items);
+                });
+
+                var url = "/Admin/GetBrands";
+                $.getJSON(url, function (data) {
+                    var items = "<option hidden disabled selected>Select brand</option>";
+                    $('#brands' + concat).empty();
+                    $.each(data, function (i, sec) {
+                        items += '<option value="' + sec.brandId + '">' + sec.brandName + '</option > ';
+                    });
+                    $('#brands' + concat).html(items);
+                });
+
+                var url = "/Admin/GetProductColors";
+                $.getJSON(url, function (data) {
+                    console.log(data);
+                    var items = "<option hidden disabled selected>Choose color</option>";
+                    $('#colors' + concat).empty();
+
+                    $.each(data, function (i, sec) {
+                        items += '<option value="' + sec.value + '">' + sec.text + '</option > ';
+                    });
+                    $('#colors' + concat).html(items);
+                });
+                var url = "/Admin/GetProductSizes";
+                $.getJSON(url, function (data) {
+                    console.log(data);
+                    var items = "<option hidden disabled selected>Choose size</option>";
+                    $('#sizes' + concat).empty();
+
+                    $.each(data, function (i, sec) {
+                        items += '<option value="' + sec.value + '">' + sec.text + '</option > ';
+                    });
+                    $('#sizes' + concat).html(items);
+                });
+                var url = "/Admin/GetProductMaterials";
+                $.getJSON(url, function (data) {
+                    console.log(data);
+                    var items = "<option hidden disabled selected>Choose material</option>";
+                    $('#materials' + concat).empty();
+
+                    $.each(data, function (i, sec) {
+                        items += '<option value="' + sec.value + '">' + sec.text + '</option > ';
+                    });
+                    $('#materials' + concat).html(items);
+                });
+            });
+            $("#tbody").on("click", ".btn-pinterest", function (event) {
+                $(this).closest("tr").remove();
+        });
+        });
+    </script>
+}
+
+

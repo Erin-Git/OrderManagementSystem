@@ -1,0 +1,52 @@
+﻿@model List<MetaOMS.ViewModels.DeliveryVM>
+@{
+    ViewData["Title"] = "ReturnProduct";
+    Layout = null;
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-controller="Manager" asp-action="ReturnProduct"onsubmit="return jQueryAjaxPost(this);">
+            <div class="table-responsive text-center">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Products</th>
+                            <th>Return</th>
+                            <th>Refund</th>
+                            <th>Complaint/Issue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+                                <td class="align-middle">
+                                    @Model[i].ProductVMName
+                                    <input type="hidden" asp-for="@Model[i].ProductVMId" value="@Model[i].ProductVMId" />
+                                    <input type="hidden" asp-for="@Model[i].HiddenPKVMId" value="@Model[i].HiddenPKVMId" />
+                                    <input type="hidden" asp-for="@Model[i].QuantityVM" value="@Model[i].QuantityVM" />
+                                    <input type="hidden" asp-for="@Model[i].DeliveryVMId" value="@Model[i].DeliveryVMId" />
+                                </td>
+                                <td class="align-middle">
+                                    <input type="checkbox" asp-for="@Model[i].ReturnVMStatus" />
+                                </td>
+                                <td class="align-middle">
+                                    <input type="checkbox" asp-for="@Model[i].RefundVMStatus" />
+                                </td>
+                                <td class="align-middle">
+                                    <textarea placeholder="Write here..." asp-for="@Model[i].ComplaintVMDescription"></textarea>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <div class="col-md-6 offset-md-3">
+                    <input type="submit" value="Submit" class="btn btn-tumblr text-white btn-block" />
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

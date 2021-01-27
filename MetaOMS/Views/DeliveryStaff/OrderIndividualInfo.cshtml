@@ -1,0 +1,165 @@
+﻿@model List<MetaOMS.ViewModels.DeliveryVM>
+@{
+    ViewData["Title"] = "OrderIndividualInfo-";
+    Layout = null;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <ul class="list-group">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <li class="list-group-item active font-weight-bold border-right"><i class="mdi mdi-account-circle"></i>&nbsp;Customer Info</li>
+                    <li class="list-group-item"><h6 class="font-weight-bold">Name:</h6>@Model[i].CustomerVMName</li>
+                    <li class="list-group-item"><h6 class="font-weight-bold">Contact:</h6>@Model[i].CustomerVMContactNo</li>
+                    <li class="list-group-item">
+                        <h6 class="font-weight-bold">Address:</h6>
+                        @Model[i].CustomerVMDistrict , @Model[i].CustomerVMSubDistrict ,
+                        @Model[i].CustomerVMArea , Road- @Model[i].CustomerVMRoadNo , House- @Model[i].CustomerVMRoadNo
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-6">
+            <ul class="list-group">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <li class="list-group-item active font-weight-bold border-right"><i class="mdi mdi-truck-delivery"></i>&nbsp;Order Info</li>
+
+                    <li class="list-group-item"><h6 class="font-weight-bold">Shipping by:</h6>@Model[i].ShippingVMMethod</li>
+                    <li class="list-group-item"><h6 class="font-weight-bold">Payment by:</h6>@Model[i].PaymentVMMethod</li>
+                    <li class="list-group-item">
+                        <h6 class="font-weight-bold">Ordered date:</h6>@Model[i].OrderPlacedVMDate
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-12 mt-2">
+            <ul class="list-group">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <li class="list-group-item active font-weight-bold border-right text-center"><i class="mdi mdi-shopping"></i>&nbsp;Product Details</li>
+
+                    <li class="list-group-item">
+                        <div class="table-responsive text-center">
+                            <table class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Quanity</th>
+                                        <th>Sub-total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model[i].productInventory_VM.productInventoryVMs)
+                                    {
+                                        <tr>
+                                            <td class="align-middle">@item.NameVM</td>
+                                            <td class="align-middle">@item.QuantityVM</td>
+                                            <td class="align-middle">@item.EachPriceVM</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+@*@model List<MetaOMS.ViewModels.DeliveryVM>
+    @{
+        ViewData["Title"] = "OrderIndividualInfo";
+        Layout = null;
+    }
+    <div class="container">
+        <div class="row">
+            <div class="col-10  offset-1 text-center bg-light p-10">
+                <table class="table table-striped">
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+                                <td class="thead-dark text-dark">Name:</td>
+                                <td>@Model[i].CustomerVMName</td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">Contact:</td>
+                                <td>@Model[i].CustomerVMContactNo</td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">Area:</td>
+                                <td>@Model[i].CustomerVMArea</td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">District:</td>
+                                <td>@Model[i].CustomerVMDistrict</td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">Sub-district:</td>
+                                <td>@Model[i].CustomerVMSubDistrict</td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">House No:</td>
+                                <td>@Model[i].CustomerVMHouseNo</td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">Road No:</td>
+                                <td>@Model[i].CustomerVMRoadNo</td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">Products:</td>
+                                <td>
+                                    <table class="d-flex justify-content-center table-borderless">
+                                        @foreach (var item in Model[i].productInventory_VM.productInventoryVMs)
+                                        {
+                                            <tr>
+                                                <td>@item.NameVM</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">Quantity:</td>
+                                <td>
+                                    <table class="d-flex justify-content-center table-borderless">
+                                        @foreach (var item in Model[i].productInventory_VM.productInventoryVMs)
+                                        {
+                                            <tr>
+                                                <td>@item.QuantityVM</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">Sub-total:</td>
+                                <td>
+                                    <table class="d-flex justify-content-center table-borderless">
+                                        @foreach (var item in Model[i].productInventory_VM.productInventoryVMs)
+                                        {
+                                            <tr>
+                                                <td>@item.EachPriceVM</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">Total price:</td>
+                                <td>@Model[i].TotalPriceVM</td>
+                            </tr>
+                            <tr>
+                                <td class="thead-dark text-dark">Order placed on:</td>
+                                <td>@Model[i].OrderPlacedVMDate</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>*@

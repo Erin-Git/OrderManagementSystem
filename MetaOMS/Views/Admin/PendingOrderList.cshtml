@@ -1,0 +1,246 @@
+﻿@model X.PagedList.IPagedList<MetaOMS.ViewModels.OrderVM>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@{
+    ViewData["Title"] = "PendingOrders-";
+}
+
+<link href="~/Toastr/toastr.min.css" rel="stylesheet" />
+<link href="~/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+<div class="col-10 offset-1 text-center">
+    <h2 class="text-center mt-5 mb-3">Pending Orders</h2>
+    <div class="search-form mb-2">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i class="ti-search"></i>
+                </div>
+            </div>
+            <input id="myCustomSearch" type="text" class="form-control" placeholder="Type here to search...">
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table"id="example">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Deliverable</th>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    @*<th>Area</th>*@
+                    <th>Ordered products</th>
+                    <th>Product quantity</th>
+                    @*<th>Sub-total</th>*@
+                    <th>Total price</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td class="align-middle">@Model[i].SerialNo</td>
+                        <td class="align-middle">
+                            <input asp-for="@Model[i].StatusVM" type="checkbox" class="form-check"
+                                   data-id="@Model[i].CustomerVMId" />
+                        </td>
+                        <td class="align-middle">@Model[i].CustomerVMName</td>
+                        <td class="align-middle">@Model[i].CustomerVMContactNo</td>
+                        <td>
+                            <table class="d-flex justify-content-center table-borderless">
+                                @foreach (var item in Model[i].productInventory_VM.productInventoryVMs)
+                                {
+                                    <tr>
+                                        <td>@item.NameVM</td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                        <td>
+                            <table class="d-flex justify-content-center table-borderless">
+                                @foreach (var item in Model[i].productInventory_VM.productInventoryVMs)
+                                {
+                                    <tr>
+                                        <td>@item.QuantityVM</td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+
+                        <td class="align-middle">@Model[i].TotalPriceVM</td>
+                        <td class="font-weight-bold align-middle" id="status">@Model[i].StringStatusVM</td>
+                        <td class="align-middle">
+                            <div class="btn-group">
+                                @*<a class="btn btn-dropbox text-white"
+                                   asp-controller="Admin" asp-action="UpdateOrder" asp-route-id="@Model[i].CustomerVMId">
+                                    <i class="mdi mdi-pencil"></i>
+                                </a>*@
+                                <input id="disableThis" value="Cancel" class="btn btn-pinterest text-white" type="button"
+                                       asp-for="@Model[i].CancelVMStatus" data-id="@Model[i].HiddenPKVMId" />
+                                @*<a onclick="cancelOrder('@Url.Action("CancelOrder","Admin",new {id=@Model[i].HiddenPKVMId },Context.Request.Scheme)')"
+                                    class="btn btn-pinterest text-white"><i class="mdi mdi-close-circle"></i></a>*@
+                                @*<button class="btn btn-pinterest text-white"asp-for="@Model[i].CancelVMStatus"
+                                            data-id="@Model[i].HiddenPKVMId" onclick="cancelOrder">
+                                    <i class="mdi mdi-close-circle"></i>
+                                    </button>*@
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("PendingOrderList", new { page = page }),
+    new X.PagedList.Mvc.Core.Common.PagedListRenderOptions
+    {
+        DisplayItemSliceAndTotal = true,
+        ContainerDivClasses = new[] { "navigation" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+    })
+</div>
+@section Scripts{
+    <script>
+        $("input[type=checkbox]").click(function () {
+            var THIS = $(this);
+            var customerId = $(this).data("id");
+            console.log($(this).prop("checked"))
+            if ($(this).prop("checked")) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to make this order deliverable!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Do it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            var url = "/DeliveryStaff/DeliverableOrder";
+                            $.getJSON(url, { id: customerId }, function (data) {
+                                if (data.sms === "Saved") {
+                                    toastr["success"]("Order is deliverable now")
+
+                                    THIS.closest("tr").find('#status').text("To-be delivered");
+                                }
+                                else {
+                                    toastr["info"]("Order is still pending")
+                                    THIS.closest("tr").find('#status').text("Pending");
+                                }
+                            });
+                        } catch (ex) {
+                            console.log(ex)
+                        }
+                    }
+                    else {
+                        $(this).prop("checked", false);
+                    }
+                });
+            }
+            else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to keep this order pending !",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Do it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            var url = "/DeliveryStaff/DeliverableOrder";
+                            $.getJSON(url, { id: customerId }, function (data) {
+                                if (data.sms === "Saved") {
+                                    toastr["success"]("Order is deliverable now")
+                                    THIS.closest("tr").find('#status').text("To-be delivered"); console.log(customerId);
+                                }
+                                else {
+                                    toastr["info"]("Order is still pending")
+                                    THIS.closest("tr").find('#status').text("Pending");
+                                }
+                            });
+                        } catch (ex) {
+                            console.log(ex)
+                        }
+                    }
+                    else {
+                        $(this).prop("checked", true);
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+        });
+    </script>
+    @*<script>
+            $('#cancelOrderbtn').click(function () {
+                $(this).closest('tr').find('input').prop("disabled", false);
+            });
+        </script>*@
+
+    <script>
+        $("input[type=button]").click(function () {
+            var THIS = $(this);
+            var hiddenPKId = $(this).data("id");
+            console.log($(this).prop("click"))
+            if ($(this).prop("click")) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You want to cancel this order!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Cancel!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            var url = "/Admin/CancelOrder";
+                            $.getJSON(url, { id: hiddenPKId }, function (data) {
+                                if (data.sms === "Saved") {
+                                    toastr["success"]("Order has been cancelled")
+                                    THIS.closest("tr").find('#status').text("Cancelled");
+                                    THIS.closest('tr').find('#disableThis').prop("disabled", true);
+                                }
+                                //else {
+                                //    toastr["info"]("Order is still pending")
+                                //    THIS.closest("tr").find('#status').text("Pending");
+                                //}
+                            });
+                        } catch (ex) {
+                            console.log(ex)
+                        }
+                    }
+                    else {
+                        $(this).prop("clicked", false);
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                "dom": 'lrtip',
+                "info": false,
+                "lengthChange": false,
+                "paging": false,
+            });
+            var table = $('#example').DataTable();
+            $('#myCustomSearch').on('keyup', function () {
+                table.search($(this).val()).draw();
+            });
+        });
+    </script>
+    <script src="~/Toastr/toastr.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="~/sweetalert2/sweetalert2.min.js"></script>
+}

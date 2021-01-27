@@ -1,0 +1,111 @@
+﻿@model MetaOMS.ViewModels.ProductInventoryVM
+@using MetaOMS.ViewModels
+@{
+    ViewData["Title"] = "UpdateProduct";
+}
+
+
+<div class="container mt-5 text-center">
+    <h2 class="text-center mt-5 mb-5">Update Product</h2>
+    <form asp-controller="Admin" asp-action="UpdateProduct" method="post">
+        <table class="table table-responsive">
+            <thead class="thead-light">
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th>Material</th>
+                    <th>Description</th>
+                    <th>Purchase price</th>
+                    <th>Sell price</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr>
+                    <td>
+                        <input asp-for="NameVM" placeholder="Product name" />
+                        <input type="hidden" asp-for="StockInQuantityVM" />
+                        <input type="hidden" asp-for="AvailableQuantityVM" />
+                        <input type="hidden" asp-for="StockInDateVM" />
+                        <span asp-validation-for="NameVM"></span>
+                    </td>
+                    <td>
+                        <select id="productCategories0" asp-for="ProductCategoryIdVM" asp-items="@ViewBag.ProductCategory"  >
+                            <option disabled hidden selected>Select product category</option>
+                        </select>
+                        <span asp-validation-for="ProductCategoryIdVM"></span>
+                    </td>
+                    <td>
+                        <select id="brands0" asp-for="BrandVMId" asp-items="@ViewBag.ProductBrand">
+                            <option disabled hidden selected>Select brand</option>
+                        </select>
+                        <span asp-validation-for="BrandVMId"></span>
+                    </td>
+                    <td>
+                        <select id="colors0" asp-for="ColorVM"
+                                asp-items="@Html.GetEnumSelectList<ColorEnum>()">
+                            <option disabled hidden selected>Choose color</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="sizes0" asp-for="SizeVM"
+                                asp-items="@Html.GetEnumSelectList<SizeEnum>()">
+                            <option disabled hidden selected>Choose size</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select id="materials0" asp-for="MaterialVM"
+                                asp-items="@Html.GetEnumSelectList<MaterialEnum>()">
+                            <option disabled hidden selected>Choose material</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input asp-for="DescriptionVM" placeholder="Description" />
+                        <span asp-validation-for="DescriptionVM"></span>
+                    </td>
+                    <td>
+                        <input asp-for="PurchasePriceVM" placeholder="Purchase price" />
+                        <span asp-validation-for="PurchasePriceVM"></span>
+                    </td>
+                    <td>
+                        <input asp-for="SellPriceVM" placeholder="Sell price" />
+                        <span asp-validation-for="SellPriceVM"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn btn-success" type="submit">Update</button>
+    </form>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        //var concat = 0;
+        //var counter = 0;
+        $(document).ready(function () {
+
+            //var url = "/Admin/GetProductCategories";
+            //$.getJSON(url, function (data) {
+            //    var items = "<option hidden disabled selected>Select product category</option>";
+            //    $('#productCategories' + 0).empty();
+            //    $.each(data, function (i, sec) {
+            //        items += '<option value="' + sec.productCategoryId + '">' + sec.productCategoryTitle + '</option > ';
+            //    });
+            //    $('#productCategories' + 0).html(items);
+            //});
+
+            //var url = "/Admin/GetBrands";
+            //$.getJSON(url, function (data) {
+            //    var items = "<option hidden disabled selected>Select brand</option>";
+            //    $('#brands' + 0).empty();
+            //    $.each(data, function (i, sec) {
+            //        items += '<option value="' + sec.brandId + '">' + sec.brandName + '</option > ';
+            //    });
+            //    $('#brands' + 0).html(items);
+            //});
+        });
+    </script>
+}

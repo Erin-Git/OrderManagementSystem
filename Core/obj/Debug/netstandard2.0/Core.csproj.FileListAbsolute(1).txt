@@ -1,0 +1,8 @@
+E:\MetaOrderManagementSystem\Core\bin\Debug\netstandard2.0\Core.deps.json
+E:\MetaOrderManagementSystem\Core\bin\Debug\netstandard2.0\Core.dll
+E:\MetaOrderManagementSystem\Core\bin\Debug\netstandard2.0\Core.pdb
+E:\MetaOrderManagementSystem\Core\obj\Debug\netstandard2.0\Core.AssemblyInfoInputs.cache
+E:\MetaOrderManagementSystem\Core\obj\Debug\netstandard2.0\Core.AssemblyInfo.cs
+E:\MetaOrderManagementSystem\Core\obj\Debug\netstandard2.0\Core.csproj.CoreCompileInputs.cache
+E:\MetaOrderManagementSystem\Core\obj\Debug\netstandard2.0\Core.dll
+E:\MetaOrderManagementSystem\Core\obj\Debug\netstandard2.0\Core.pdb

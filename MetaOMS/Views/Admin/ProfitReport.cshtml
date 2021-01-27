@@ -1,0 +1,67 @@
+﻿@model List<MetaOMS.ViewModels.ProductInventoryVM>
+@{
+    ViewData["Title"] = "ProfitReport";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-2 text-left mt-5 mb-3">
+            <a asp-controller="Admin" asp-action="Index" class="btn btn-dark"><i class="mdi mdi-keyboard-backspace"></i></a>
+        </div>
+        <div class="col-8 text-center mt-5 mb-3">
+            <h2 class="mt-3 mb-3">Profit Report</h2>
+        </div>
+        <div class="col-2 text-right mt-5 mb-3">
+            <button type="button" id="print" class="btn btn-dark"><i class="mdi mdi-printer"></i></button>
+        </div>
+    </div>
+    <div class="col-10 offset-1 bg-light" id="profitReport">
+        <h3 class="text-center pt-4 mb-3">Monthly Profit</h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Sold</th>
+                        <th>Profit rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@item.SerialNo</td>
+                            <td class="align-middle">@item.NameVM</td>
+                            <td class="align-middle">@item.ProductCategoryTitleVM</td>
+                            <td class="align-middle">@item.BrandNameVM</td>
+                            <td class="align-middle">@item.QuantityVM</td>
+                            <td class="align-middle">@item.ProfitEachVM %</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#print").click(function () {
+                var element = document.getElementById('profitReport');
+                // Generate PDF.
+                const options = {
+                    filename: 'ProfitReport.pdf',
+                    image: { type: 'jpeg' },
+                    html2canvas: {},
+                    jsPDF: { orientation: 'Landscape', unit: 'in', format: 'letter', compressPDF: true }
+                };
+                html2pdf().from(element).set(options).save();
+            });
+        });
+    </script>
+
+} 

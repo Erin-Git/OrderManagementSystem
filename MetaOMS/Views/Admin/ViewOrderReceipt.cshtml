@@ -1,0 +1,121 @@
+﻿@model List<MetaOMS.ViewModels.OrderVM>
+@using MetaOMS.ViewModels
+@{
+    ViewData["Title"] = "ViewOrderReceipt-";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-2 text-left mt-5 mb-3">
+            <a asp-controller="Admin"asp-action="AllOrders" class="btn btn-dark"><i class="mdi mdi-keyboard-backspace"></i></a>
+        </div>
+        <div class="col-8 text-center mt-5 mb-3">
+            <h2 class="mt-3 mb-3">Order Receipt</h2>
+        </div>
+        <div class="col-2 text-right mt-5 mb-3">
+            <button type="button" id="print" class="btn btn-dark"><i class="mdi mdi-printer"></i></button>
+        </div>
+    </div>
+    <div class="row bg-light border-dark" id="receipt">
+        <div class="col-12 text-center mt-5 p-2">
+            <h4 class="font-weight-bold">Scorpion Express</h4>
+            <h6 class="font-weight-normal">Your trusted destiny for online shopping</h6>
+            <hr />
+        </div>
+        <div class="col-4 offset-2 mt-3 p-3">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <h5 class="text-left font-weight-bold">@Model[i].CustomerVMName</h5>
+                <div class="text-left">
+                    <span> House- @Model[i].CustomerVMHouseNo , Road- @Model[i].CustomerVMRoadNo</span>
+                    <br />
+                    <span>@Model[i].CustomerVMArea , @Model[i].CustomerVMSubDistrict , @Model[i].CustomerVMSubDistrict</span>
+                    <br />
+                    <span>+88 @Model[i].CustomerVMContactNo</span>
+                    <br />
+                    <span>Ordered on: @Model[i].OrderVMDate</span>
+                    <br />
+                    <span>Shipping: @Model[i].ShippingVMMethod</span>
+                    <br />
+                    <span>Payment: @Model[i].PaymentVMMethod</span>
+                </div>
+            }
+        </div>
+        <div class="col-4 mt-3 p-3">
+            <h5 class="font-weight-bold text-right">Scorpion Express</h5>
+            <div class="text-right">
+                <span>Mirpur-10</span>
+                <br />
+                <span>Block-D, H/A8</span>
+                <br />
+                <span>65K Lane Road</span>
+                <br />
+                <span>+880 1122334455</span>
+                <br />
+            </div>
+        </div>
+        <div class="col-12 table mt-3 mb-3">
+            <h5 class="font-weight-bold text-center">[Order Details]</h5>
+            <table class="col-8 offset-2 text-center">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Item</th>
+                            <th>Brand</th>
+                            <th>Details</th>
+                            <th>Unit cost</th>
+                            <th>Qty</th>
+                            <th>Sub-total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model[i].productInventory_VM.productInventoryVMs)
+                        {
+                            <tr>
+                                <td class="align-middle">@item.NameVM</td>
+                                <td class="align-middle">@item.BrandNameVM</td>
+                                <td class="align-middle">
+                                  Color- @((ColorEnum)Convert.ToInt32(item.ColorVM)),
+                                    <br />
+                                   Size- @((SizeEnum)Convert.ToInt32(item.SizeVM)),
+                                    <br />
+                                  Material- @((MaterialEnum)Convert.ToInt32(item.MaterialVM))
+                                </td>
+                                <td class="align-middle">@item.ProductVMUnitCost</td>
+                                <td class="align-middle">@item.QuantityVM</td>
+                                <td class="align-middle">@item.EachPriceVM</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td class="align-middle"></td>
+                            <td class="align-middle"></td>
+                            <td class="align-middle"></td>
+                            <td class="align-middle"></td>
+                            <td class="align-middle font-weight-bold text-right">Total-</td>
+                            <td class="align-middle font-weight-bold">@Model[i].TotalPriceVM BDT</td>
+                        </tr>
+                    </tbody>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#print").click(function () {
+                var element = document.getElementById('receipt');
+                // Generate PDF.
+                const options = {
+                    filename: 'Receipt.pdf',
+                    image: { type: 'jpeg' },
+                    html2canvas: {},
+                    jsPDF: { orientation: 'Landscape', unit: 'in', format: 'letter', compressPDF: true }
+                };
+                html2pdf().from(element).set(options).save();
+            });
+        });
+    </script>
+
+}

@@ -1,0 +1,65 @@
+﻿@model MetaOMS.ViewModels.ProductInventoryVM
+@using MetaOMS.ViewModels
+@{
+    ViewData["Title"] = "ProductIndividualInfo";
+    Layout = null;
+
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-10  offset-1 text-center bg-light p-10">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td class="thead-dark text-dark">Name:</td>
+                        <td>@Model.NameVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Category:</td>
+                        <td>@Model.ProductCategoryTitleVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Brand:</td>
+                        <td>@Model.BrandNameVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Color:</td>
+                        <td>@((ColorEnum)Convert.ToInt32(Model.ColorVM))</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Size:</td>
+                        <td>@((SizeEnum)Convert.ToInt32(Model.SizeVM))</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Material:</td>
+                        <td>@((MaterialEnum)Convert.ToInt32(Model.MaterialVM))</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Purchase price:</td>
+                        <td>@Model.PurchasePriceVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Sell price:</td>
+                        <td>@Model.SellPriceVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Stocked In:</td>
+                        <td>@Model.StockInQuantityVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Available:</td>
+                        <td>@Model.AvailableQuantityVM</td>
+                    </tr>
+                    <tr>
+                        <td class="thead-dark text-dark">Stocked in date:</td>
+                        <td>@Model.StockInDateVM</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <a class="btn btn-dropbox text-white" asp-controller="Admin" asp-action="UpdateProduct" asp-route-id="@Model.ProductVMId"><i class="mdi mdi-pencil"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
